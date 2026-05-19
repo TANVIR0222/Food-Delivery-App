@@ -10,6 +10,7 @@ import generateDummyToken from "@/utils/generate-dummy-token";
 import { save_token } from "@/utils/token-store";
 import { _HEIGHT } from "@/utils/utils";
 import { Checkbox } from "expo-checkbox";
+import { router } from "expo-router";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
@@ -23,6 +24,7 @@ const LoginScreen = () => {
     const token = generateDummyToken(64);
     await save_token({ value: token });
     signIn();
+    router.push("/(tabs)");
   };
 
   return (
@@ -111,7 +113,7 @@ const LoginScreen = () => {
                     showSignUpLink={false}
                     signUpPrompt="Don’t have an account?"
                     signUpText="Register"
-                  // onSignUpPress={() => router.push("/(auth)/register")}
+                    // onSignUpPress={() => router.push("/(auth)/register")}
                   />
                 </View>
               </View>
