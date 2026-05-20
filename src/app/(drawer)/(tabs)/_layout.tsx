@@ -1,14 +1,18 @@
 import { useSession } from "@/components/auth/ctx";
+import { useCart } from "@/context/CartContext";
 import { Redirect } from "expo-router";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 import React from "react";
 
 export default function _layout() {
   const { session, isLoading } = useSession();
+  const { cartItems } = useCart();
 
   if (!isLoading && !session) {
     return <Redirect href="/(auth)" />;
   }
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <NativeTabs backgroundColor={"#fff"}>
@@ -17,8 +21,16 @@ export default function _layout() {
         <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="orders">
-        <NativeTabs.Trigger.Label>order</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="house.fill" md="orders" />
+        <NativeTabs.Trigger.Icon sf="cart.fill" md="shop" />
+
+        {cartCount && (
+          <NativeTabs.Trigger.Badge>
+            {/* @ts-ignore */}
+            {cartCount > 9 ? "9+" : cartCount}
+          </NativeTabs.Trigger.Badge>
+        )}
+
+        <NativeTabs.Trigger.Label>Orders</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="search">

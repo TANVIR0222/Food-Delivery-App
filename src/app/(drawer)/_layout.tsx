@@ -14,6 +14,8 @@ export default function DrawerLayout() {
         drawerActiveBackgroundColor: "#000000",
       }}
       drawerContent={(props: any) => <CustomDrawerContent {...props} />}
-    ></Drawer>
+    >
+      {/* <Drawer.Screen name="index" /> */}
+    </Drawer>
   );
 }

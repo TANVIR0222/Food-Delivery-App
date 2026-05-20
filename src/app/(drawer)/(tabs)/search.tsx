@@ -1,5 +1,4 @@
 import PageWrapper from "@/components/PageWrapper";
-import { useCart } from "@/context/CartContext";
 import tw from "@/lib/tailwind";
 import { restaurantAllData } from "@/utils/all-dammy-data";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -13,8 +12,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useFavorites } from "@/context/FavoriteContext";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,7 +34,26 @@ const getRestaurantCategory = (item: any) => {
 };
 
 // ---------------- CARD ----------------
-const RestaurantCard = ({ item, onToggleHeart }: any) => {
+const RestaurantCard = ({ item }: any) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = isFavorite(item.id);
+
+  const handleToggle = () => {
+    const favoriteItem = {
+      id: item.id,
+      name: item.name,
+      restaurantName: item.name,
+      price: item.numericMinPrice || 450,
+      rating: item.rating || 4.8,
+      image: item.image,
+    };
+    toggleFavorite(favoriteItem);
+    Alert.alert(
+      isFav ? "Removed from Favorites" : "Added to Favorites",
+      `${item.name} has been ${isFav ? "removed from" : "added to"} your favorites.`
+    );
+  };
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -55,23 +75,23 @@ const RestaurantCard = ({ item, onToggleHeart }: any) => {
         />
 
         <TouchableOpacity
-          onPress={() => onToggleHeart(item.id)}
+          onPress={handleToggle}
           style={tw`absolute top-2 right-2 bg-white rounded-full p-1`}
         >
           <Ionicons
-            name={item.hasHeart ? "heart" : "heart-outline"}
+            name={isFav ? "heart" : "heart-outline"}
             size={20}
-            color={item.hasHeart ? "#ef4444" : "#9ca3af"}
+            color={isFav ? "#ef4444" : "#9ca3af"}
           />
         </TouchableOpacity>
       </View>
 
       <View style={tw`flex-1 ml-4`}>
-        <Text style={tw`text-black text-lg font-bold`}>{item.name}</Text>
+        <Text style={tw`text-black text-lg font-inter-bold`}>{item.name}</Text>
 
-        <Text style={tw`text-gray-500 text-sm mt-1`}>{item.description}</Text>
+        <Text style={tw`text-text_gray text-sm mt-1`}>{item.description}</Text>
 
-        <Text style={tw`text-gray-700 text-xs mt-2`}>
+        <Text style={tw`text-text_gray text-xs mt-2`}>
           {getRestaurantCategory(item)} • {item.distanceKm} Km •{" "}
           {item.deliveryTimeMins} min
         </Text>
@@ -81,7 +101,7 @@ const RestaurantCard = ({ item, onToggleHeart }: any) => {
 };
 
 // ---------------- CATEGORY SCREEN ----------------
-const CategoryScreen = ({ category, data, searchText, toggleHeart }: any) => {
+const CategoryScreen = ({ category, data, searchText }: any) => {
   const filteredData = useMemo(() => {
     return data.filter((item: any) => {
       const itemCategory = getRestaurantCategory(item);
@@ -101,7 +121,7 @@ const CategoryScreen = ({ category, data, searchText, toggleHeart }: any) => {
       data={filteredData}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <RestaurantCard item={item} onToggleHeart={toggleHeart} />
+        <RestaurantCard item={item} />
       )}
       contentContainerStyle={tw`pb-20`}
       showsVerticalScrollIndicator={false}
@@ -114,34 +134,6 @@ export default function RestaurantListScreen() {
   const [data, setData] = useState(restaurantAllData);
   const [searchText, setSearchText] = useState("");
   const { top } = useSafeAreaInsets();
-  const { addToCart, removeFromCart } = useCart();
-
-  // ---------------- HEART TOGGLE ----------------
-  const toggleHeart = (id: string) => {
-    const updated = data.map((item) =>
-      item.id === id ? { ...item, hasHeart: !item.hasHeart } : item,
-    );
-
-    setData(updated);
-
-    const restaurant = data.find((i) => i.id === id);
-
-    if (restaurant) {
-      if (!restaurant.hasHeart) {
-        addToCart({
-          id: restaurant.id,
-          restaurantId: restaurant.id,
-          restaurantName: restaurant.name,
-          name: restaurant.name,
-          price: restaurant.numericMinPrice,
-          image: restaurant.image,
-          quantity: 1,
-        });
-      } else {
-        removeFromCart(id);
-      }
-    }
-  };
 
   return (
     <View style={tw`flex-1 pt-[${top}px] bg-white`}>
@@ -187,7 +179,6 @@ export default function RestaurantListScreen() {
                 category="All"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>
@@ -198,7 +189,6 @@ export default function RestaurantListScreen() {
                 category="Burgers"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>
@@ -209,7 +199,6 @@ export default function RestaurantListScreen() {
                 category="Pizza"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>
@@ -220,7 +209,6 @@ export default function RestaurantListScreen() {
                 category="Seafood"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>
@@ -231,7 +219,6 @@ export default function RestaurantListScreen() {
                 category="Desserts"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>
@@ -242,7 +229,6 @@ export default function RestaurantListScreen() {
                 category="Healthy Food"
                 data={data}
                 searchText={searchText}
-                toggleHeart={toggleHeart}
               />
             )}
           </Tab.Screen>

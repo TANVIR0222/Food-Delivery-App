@@ -1,56 +1,230 @@
-# Welcome to your Expo app 👋
+# 🍔 Food Delivery App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, feature-rich food delivery mobile application built with **Expo SDK 55**, **React Native 0.83**, and **TypeScript**. The app features restaurant browsing, food ordering, a cart system, favorites management, and a clean drawer + bottom tab navigation.
 
-## Get started
+---
 
-1. Install dependencies
+## 📱 Features
 
-   ```bash
-   npm install
-   ```
+### 🏠 Home Screen
+- Image carousel showcasing promotions and deals
+- Food category grid (Burgers, Pizza, Seafood, Desserts, Healthy Food)
+- Popular restaurants list with ratings, delivery time, distance, and badge highlights
 
-2. Start the app
+### 🔍 Search & Browse
+- Full-text search across all restaurants
+- Category-filtered tabs (All, Burgers, Pizza, Seafood, Desserts, Healthy)
+- Restaurant cards with heart icon for quick favoriting
 
-   ```bash
-   npx expo start
-   ```
+### 🍕 Restaurant & Product Details
+- Restaurant detail screen with menu listing and tabs
+- Product detail modal (form sheet presentation) with add-to-cart functionality
+- Heart icon on every product and restaurant for favorites
 
-In the output, you'll find options to open the app in a
+### 🛒 Cart / Orders
+- Add to cart from any screen (search, product detail, all products, favorites)
+- Quantity adjustment (increment/decrement) per item
+- Remove items from cart
+- Live total price calculation
+- Checkout button (UI ready)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### ❤️ Favorites
+- Global favorites system powered by React Context
+- Toggle favorites from any heart icon across the app
+- Alert confirmation on add/remove
+- Dedicated Favorites screen showing saved items with ability to add to cart
+- Accessible from the Drawer menu and Profile page
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 👤 Profile & Settings
+- User profile display
+- Privacy Policy, Terms & Conditions, FAQ, Support links
+- Favorite shortcut
+- Account deletion option
+- Logout with confirmation alert
 
-## Get a fresh project
+### 🔐 Authentication
+- Session-based auth flow using `expo-secure-store`
+- Protected routes — unauthenticated users are redirected to login
+- Onboarding screens (3-step walkthrough)
 
-When you're ready, run:
+### 🎨 Design System
+- Custom Inter font family used throughout (`font-inter-bold`, `font-inter-semibold`, `font-inter-medium`, `font-inter-regular`)
+- Custom color palette defined in Tailwind config (primary, secondary, text_gray, stroke, etc.)
+- All prices displayed in **USD ($)**
+- Consistent styling via `twrnc` with custom Tailwind config at `src/lib/tailwind`
 
-```bash
-npm run reset-project
+---
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/                          # Expo Router file-based routing
+│   ├── _layout.tsx               # Root layout (providers + Stack navigator)
+│   ├── index.tsx                 # Splash / entry redirect
+│   │
+│   ├── (auth)/                   # Authentication screens
+│   │   ├── _layout.tsx
+│   │   └── index.tsx             # Login screen
+│   │
+│   ├── (onboarding)/             # Onboarding walkthrough
+│   │   ├── _layout.tsx
+│   │   ├── onboarding-one.tsx
+│   │   ├── onboarding-two.tsx
+│   │   └── onboarding-three.tsx
+│   │
+│   ├── (drawer)/                 # Drawer navigator
+│   │   ├── _layout.tsx           # Drawer config (right-side)
+│   │   ├── index.tsx             # Drawer favorites screen
+│   │   └── (tabs)/               # Bottom tab navigator
+│   │       ├── _layout.tsx       # Tab bar config (NativeTabs)
+│   │       ├── index.tsx         # Home tab
+│   │       ├── search.tsx        # Search tab
+│   │       ├── orders.tsx        # Cart/Orders tab
+│   │       └── profile.tsx       # Profile tab
+│   │
+│   ├── all-product/              # All restaurants listing
+│   │   └── index.tsx
+│   │
+│   ├── food-details/             # Restaurant detail + menu
+│   │   └── index.tsx
+│   │
+│   ├── favorate/                 # Standalone favorites screen
+│   │   ├── layout.tsx
+│   │   └── index.tsx
+│   │
+│   ├── modal/                    # Modal screens
+│   │   └── product-view-modal.tsx
+│   │
+│   └── top-category/             # Category browsing
+│       ├── index.tsx
+│       └── category.tsx
+│
+├── components/                   # Reusable UI components
+│   ├── auth/                     # Auth context provider (ctx.tsx)
+│   ├── home/                     # Home-specific components
+│   │   ├── home-carousel.tsx
+│   │   ├── home-top-bar.tsx
+│   │   └── home-top-categories.tsx
+│   ├── drawer-content.tsx        # Custom drawer menu
+│   ├── GlobalTopBar.tsx          # Back/title navigation bar
+│   ├── PageWrapper.tsx           # Safe area wrapper
+│   ├── MainButton.tsx            # Primary/secondary buttons
+│   ├── AuthHeading.tsx           # Auth screen headings
+│   ├── GlobalMainInput.tsx       # Form inputs
+│   └── KeyboardAvoidingComponent.tsx
+│
+├── context/                      # React Context providers
+│   ├── CartContext.tsx            # Cart state management
+│   └── FavoriteContext.tsx        # Favorites state management
+│
+├── lib/                          # Utilities & config
+│   └── tailwind.ts               # twrnc instance with custom config
+│
+├── utils/                        # Data & helpers
+│   ├── all-dammy-data.ts         # Restaurant/menu dummy data
+│   └── generate-dummy-token.ts
+│
+├── hook/                         # Custom React hooks
+├── interface/                    # TypeScript interfaces
+└── schema/                       # Yup validation schemas
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## 🛠️ Tech Stack
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Category         | Technology                                |
+|------------------|-------------------------------------------|
+| Framework        | Expo SDK 55                               |
+| Language         | TypeScript 5.9                            |
+| UI Framework     | React Native 0.83                         |
+| Navigation       | Expo Router (file-based) + Drawer + Tabs  |
+| Styling          | twrnc (TailwindCSS for React Native)      |
+| State Management | React Context (Cart, Favorites, Session)  |
+| Forms            | Formik + Yup                              |
+| Fonts            | Inter (6 weights) + Edu AU (4 weights)    |
+| Carousel         | react-native-reanimated-carousel          |
+| Secure Storage   | expo-secure-store                         |
+| Toast            | sonner-native                             |
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🚀 Getting Started
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Prerequisites
 
-## Join the community
+- Node.js 18+
+- Expo CLI (`npm install -g expo-cli`)
+- Android Studio / Xcode (for emulators)
 
-Join our community of developers creating universal apps.
+### Installation
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd expo-project
+
+# Install dependencies
+npm install
+
+# Start the development server
+npx expo start
+```
+
+### Running on Device/Emulator
+
+```bash
+# Android
+npx expo run:android
+
+# iOS
+npx expo run:ios
+
+# Expo Go (limited sandbox)
+npx expo start --go
+```
+
+---
+
+## 🎨 Design Tokens
+
+### Colors
+| Token          | Hex       | Usage                  |
+|----------------|-----------|------------------------|
+| `primary`      | `#1C79BE` | Primary brand color    |
+| `secondary`    | `#58C1F0` | Buttons, accents       |
+| `title`        | `#303030` | Heading text           |
+| `text_gray`    | `#757575` | Secondary/body text    |
+| `gray`         | `#ACACAC` | Disabled states        |
+| `stroke`       | `#EDF1F3` | Light backgrounds, borders |
+| `red`          | `#CA3535` | Error/destructive      |
+
+### Fonts
+| Class                  | Font Weight |
+|------------------------|-------------|
+| `font-inter-light`     | Light       |
+| `font-inter-regular`   | Regular     |
+| `font-inter-medium`    | Medium      |
+| `font-inter-semibold`  | SemiBold    |
+| `font-inter-bold`      | Bold        |
+| `font-inter-black`     | Black       |
+
+---
+
+## 📋 Scripts
+
+```bash
+npm start          # Start Expo dev server
+npm run android    # Build & run on Android
+npm run ios        # Build & run on iOS
+npm run web        # Start web version
+npm run lint       # Run ESLint
+npm run reset-project  # Reset to blank project
+```
+
+---
+
+## 📄 License
+
+This project is private and not licensed for public distribution.

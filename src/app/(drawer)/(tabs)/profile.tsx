@@ -1,6 +1,7 @@
 import { useSession } from "@/components/auth/ctx";
 import PageWrapper from "@/components/PageWrapper";
 import tw from "@/lib/tailwind";
+import { router } from "expo-router";
 
 import React from "react";
 import {
@@ -123,6 +124,14 @@ export default function Profile() {
                   FAQ
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.push("/favorate")}
+                style={tw`flex-row items-center justify-between border border-border border-opacity-50 py-3 px-5 rounded-full mt-4`}
+              >
+                <Text style={tw`text-black text-text14 font-sfpro-600`}>
+                  favorate
+                </Text>
+              </TouchableOpacity>
 
               {/* Delete Account */}
               <TouchableOpacity
@@ -134,7 +143,7 @@ export default function Profile() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={tw`flex-row items-center justify-between border border-border border-opacity-50 py-3 px-5 rounded-full mt-4`}
-                // onPress={() => handleDeleteAccount()}
+              // onPress={() => handleDeleteAccount()}
               >
                 <Text style={tw`text-black text-text14 font-sfpro-600`}>
                   Delete Account

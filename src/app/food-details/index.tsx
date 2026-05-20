@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import tw from "twrnc";
+import tw from "@/lib/tailwind";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +14,7 @@ const Tab = createMaterialTopTabNavigator();
 const MenuCard = ({ item }: any) => {
   return (
     <View
-      style={tw`flex-row items-center bg-gray-100 rounded-3xl p-3 mb-4 mx-4`}
+      style={tw`flex-row items-center bg-stroke rounded-3xl p-3 mb-4 mx-4`}
     >
       <Image
         source={item.image}
@@ -23,9 +23,9 @@ const MenuCard = ({ item }: any) => {
       />
 
       <View style={tw`flex-1 ml-4`}>
-        <Text style={tw`text-lg font-bold`}>{item.title}</Text>
+        <Text style={tw`text-lg font-inter-bold`}>{item.title}</Text>
 
-        <Text style={tw`text-orange-500 mt-2 font-bold`}>{item.price}</Text>
+        <Text style={tw`text-orange-500 mt-2 font-inter-bold`}>{item.price}</Text>
       </View>
 
       <TouchableOpacity
@@ -39,7 +39,7 @@ const MenuCard = ({ item }: any) => {
         }
         style={tw`bg-black px-4 py-2 rounded-full`}
       >
-        <Text style={tw`text-white font-semibold`}>View</Text>
+        <Text style={tw`text-white font-inter-semibold`}>View</Text>
       </TouchableOpacity>
     </View>
   );
@@ -242,20 +242,20 @@ const RestaurantDetailsScreen = () => {
       <View style={tw`flex-1`}>
         {/* CONTENT (name, rating etc) */}
         <View style={tw`px-5 pt-5`}>
-          <Text style={tw`text-3xl font-bold`}>{restaurant.name}</Text>
+          <Text style={tw`text-3xl font-inter-bold`}>{restaurant.name}</Text>
 
-          <Text style={tw`text-gray-500 mt-2`}>{restaurant.description}</Text>
+          <Text style={tw`text-text_gray mt-2`}>{restaurant.description}</Text>
 
           <View style={tw`flex-row items-center mt-4`}>
             <Ionicons name="star" size={18} color="#F59E0B" />
-            <Text style={tw`ml-2 font-semibold`}>{restaurant.rating}</Text>
-            <Text style={tw`text-gray-500 ml-2`}>
+            <Text style={tw`ml-2 font-inter-semibold`}>{restaurant.rating}</Text>
+            <Text style={tw`text-text_gray ml-2`}>
               ({restaurant.reviewCount} reviews)
             </Text>
           </View>
         </View>
 
-        <Text style={tw`text-2xl font-bold px-5 mt-6`}>Popular Menu</Text>
+        <Text style={tw`text-2xl font-inter-bold px-5 mt-6`}>Popular Menu</Text>
 
         {/* TABS */}
         <View style={tw`flex-1 mt-3`}>

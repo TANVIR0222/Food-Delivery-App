@@ -1,5 +1,6 @@
 import { SessionProvider, useSession } from "@/components/auth/ctx";
 import { CartProvider } from "@/context/CartContext";
+import { FavoriteProvider } from "@/context/FavoriteContext";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -47,10 +48,12 @@ export default function RootLayout() {
 
   return (
     <CartProvider>
-      <SessionProvider>
-        {/* <SplashScreenController /> */}
-        <RootNavigator />
-      </SessionProvider>
+      <FavoriteProvider>
+        <SessionProvider>
+          {/* <SplashScreenController /> */}
+          <RootNavigator />
+        </SessionProvider>
+      </FavoriteProvider>
     </CartProvider>
   );
 }
@@ -72,6 +75,7 @@ function RootNavigator() {
 
         <Stack.Screen name="(drawer)" />
         <Stack.Screen name="(auth)" />
+        <Stack.Screen name="favorate" />
 
         <Stack.Screen
           name="modal/product-view-modal"

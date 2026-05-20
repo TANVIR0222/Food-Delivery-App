@@ -30,7 +30,7 @@ const CategoryCard = ({ item }: any) => {
           },
         ]}
       >
-        <Text style={tw`text-white text-base font-bold`}>{item.title}</Text>
+        <Text style={tw`text-white text-base font-inter-bold`}>{item.title}</Text>
       </View>
     </TouchableOpacity>
   );
