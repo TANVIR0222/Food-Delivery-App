@@ -1,11 +1,13 @@
 import GlobalTopBar from "@/components/GlobalTopBar";
+import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoriteContext";
+import tw from "@/lib/tailwind";
 import { restaurantAllData } from "@/utils/all-dammy-data";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import tw from "@/lib/tailwind";
+import { Alert, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +16,7 @@ const Tab = createMaterialTopTabNavigator();
 const MenuCard = ({ item }: any) => {
   return (
     <View
-      style={tw`flex-row items-center bg-stroke rounded-3xl p-3 mb-4 mx-4`}
+      style={tw`flex-row items-center bg-description2/10 rounded-3xl p-3 mb-4 mx-4`}
     >
       <Image
         source={item.image}
@@ -25,7 +27,9 @@ const MenuCard = ({ item }: any) => {
       <View style={tw`flex-1 ml-4`}>
         <Text style={tw`text-lg font-inter-bold`}>{item.title}</Text>
 
-        <Text style={tw`text-orange-500 mt-2 font-inter-bold`}>{item.price}</Text>
+        <Text style={tw`text-orange-500 mt-2 font-inter-bold`}>
+          {item.price}
+        </Text>
       </View>
 
       <TouchableOpacity
@@ -51,6 +55,14 @@ const RestaurantDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
   const restaurant = restaurantAllData.find((item) => item.id === id);
+  const { addToCart, cartItems } = useCart();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = isFavorite(restaurant?.id || "");
+
+  const firstMenuItem = restaurant?.menu?.[0];
+  const isAdded = firstMenuItem
+    ? cartItems.some((cartItem) => cartItem.id === firstMenuItem.id)
+    : false;
 
   if (!restaurant) {
     return (
@@ -70,7 +82,7 @@ const RestaurantDetailsScreen = () => {
         : restaurant.name.toLowerCase().includes("dessert")
           ? "dessert"
           : restaurant.name.toLowerCase().includes("healthy") ||
-              restaurant.name.toLowerCase().includes("fit")
+            restaurant.name.toLowerCase().includes("fit")
             ? "healthy"
             : restaurant.name.toLowerCase().includes("sea")
               ? "seafood"
@@ -227,15 +239,39 @@ const RestaurantDetailsScreen = () => {
           resizeMode="cover"
         />
 
-        <View style={tw`absolute top-14  left-4`}>
-          <GlobalTopBar />
-        </View>
-        {/* <TouchableOpacity
-          onPress={() => router?.back()}
-          style={tw`absolute top-14 left-4 bg-white p-2 rounded-full`}
+        {/* BACK BUTTON */}
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={tw`absolute top-14 left-4 bg-white w-10 h-10 rounded-full items-center justify-center`}
         >
           <Ionicons name="arrow-back" size={22} color="black" />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
+
+        {/* HEART / FAVORITE BUTTON */}
+        <TouchableOpacity
+          onPress={() => {
+            const favItem = {
+              id: restaurant.id,
+              name: restaurant.name,
+              restaurantName: restaurant.name,
+              price: restaurant.numericMinPrice,
+              rating: restaurant.rating,
+              image: restaurant.image,
+            };
+            toggleFavorite(favItem);
+            Alert.alert(
+              isFav ? "Removed from Favorites" : "Added to Favorites",
+              `${restaurant.name} has been ${isFav ? "removed from" : "added to"} your favorites.`
+            );
+          }}
+          style={tw`absolute top-14 right-4 bg-white w-10 h-10 rounded-full items-center justify-center`}
+        >
+          <Ionicons
+            name={isFav ? "heart" : "heart-outline"}
+            size={22}
+            color={isFav ? "#ef4444" : "#333"}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* SCROLLABLE AREA */}
@@ -248,12 +284,43 @@ const RestaurantDetailsScreen = () => {
 
           <View style={tw`flex-row items-center mt-4`}>
             <Ionicons name="star" size={18} color="#F59E0B" />
-            <Text style={tw`ml-2 font-inter-semibold`}>{restaurant.rating}</Text>
+            <Text style={tw`ml-2 font-inter-semibold`}>
+              {restaurant.rating}
+            </Text>
             <Text style={tw`text-text_gray ml-2`}>
               ({restaurant.reviewCount} reviews)
             </Text>
           </View>
         </View>
+
+        {/* ADD TO CART BUTTON */}
+        {firstMenuItem && (
+          <View style={tw`px-5 mt-4`}>
+            <TouchableOpacity
+              disabled={isAdded}
+              onPress={() => {
+                addToCart({
+                  id: firstMenuItem.id,
+                  restaurantId: restaurant.id,
+                  restaurantName: restaurant.name,
+                  name: firstMenuItem.title,
+                  price: firstMenuItem.numericPrice,
+                  image: firstMenuItem.image,
+                  quantity: 1,
+                });
+                Alert.alert("Success", `${firstMenuItem.title} has been added to your cart.`);
+              }}
+              style={[
+                tw`py-3 rounded-2xl`,
+                isAdded ? tw`bg-gray` : tw`bg-black`,
+              ]}
+            >
+              <Text style={tw`text-white text-center font-inter-bold`}>
+                {isAdded ? "Added to Cart" : "Add to Cart"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <Text style={tw`text-2xl font-inter-bold px-5 mt-6`}>Popular Menu</Text>
 
@@ -286,13 +353,53 @@ const RestaurantDetailsScreen = () => {
               },
             }}
           >
-            <Tab.Screen name="Related">{() => <RelatedTab />}</Tab.Screen>
+            <Tab.Screen name="Related">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <RelatedTab />
+                </View>
+              )}
+            </Tab.Screen>
 
-            <Tab.Screen name="All">{() => <AllTab />}</Tab.Screen>
-            <Tab.Screen name="Burger">{() => <BurgerTab />}</Tab.Screen>
-            <Tab.Screen name="Pizza">{() => <PizzaTab />}</Tab.Screen>
-            <Tab.Screen name="Desserts">{() => <DessertTab />}</Tab.Screen>
-            <Tab.Screen name="Healthy">{() => <HealthyTab />}</Tab.Screen>
+            <Tab.Screen name="All">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <AllTab />
+                </View>
+              )}
+            </Tab.Screen>
+
+            <Tab.Screen name="Burger">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <BurgerTab />
+                </View>
+              )}
+            </Tab.Screen>
+
+            <Tab.Screen name="Pizza">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <PizzaTab />
+                </View>
+              )}
+            </Tab.Screen>
+
+            <Tab.Screen name="Desserts">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <DessertTab />
+                </View>
+              )}
+            </Tab.Screen>
+
+            <Tab.Screen name="Healthy">
+              {() => (
+                <View style={tw`flex-1 bg-white`}>
+                  <HealthyTab />
+                </View>
+              )}
+            </Tab.Screen>
           </Tab.Navigator>
         </View>
       </View>
