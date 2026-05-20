@@ -1,10 +1,7 @@
-import {
-  IconsNotification,
-  IconsSearch,
-  IconsSearchImage,
-} from "@/assets/Icons";
+import { IconsSearch, IconsSearchImage } from "@/assets/Icons";
 import tw from "@/lib/tailwind";
-import { router } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -13,6 +10,8 @@ import { SvgXml } from "react-native-svg";
 
 export default function HomeTopBar() {
   const { top } = useSafeAreaInsets();
+  const navigation = useNavigation();
+
   return (
     <View
       style={tw`bg-secondary relative rounded-b-3xl h-[25%] pt-[${top / 2}px]`}
@@ -32,16 +31,16 @@ export default function HomeTopBar() {
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={tw` relative z-50 bg-white p-2 rounded-full`}>
-          <SvgXml xml={IconsNotification} />
-          <View style={tw`absolute top-0 right-0 bg-red w-5 h-5 rounded-full `}>
-            <Text style={tw`text-white font-inter-regular text-center`}>4</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => navigation.openDrawer()}
+          style={tw` relative z-50 `}
+        >
+          <MaterialIcons name="menu-open" size={40} color="black" />
         </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={tw` mx-3 z-50 flex-row items-center gap-2 bg-white p-3 rounded-full`}
-        onPress={() => router.push("/(tabs)/search")}
+        onPress={() => router.push("/(drawer)/(tabs)/search")}
       >
         <SvgXml xml={IconsSearch} />
         <Text>Search...</Text>

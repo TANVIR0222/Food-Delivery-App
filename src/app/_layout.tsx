@@ -1,4 +1,5 @@
 import { SessionProvider, useSession } from "@/components/auth/ctx";
+import { CartProvider } from "@/context/CartContext";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -45,10 +46,12 @@ export default function RootLayout() {
   }
 
   return (
-    <SessionProvider>
-      {/* <SplashScreenController /> */}
-      <RootNavigator />
-    </SessionProvider>
+    <CartProvider>
+      <SessionProvider>
+        {/* <SplashScreenController /> */}
+        <RootNavigator />
+      </SessionProvider>
+    </CartProvider>
   );
 }
 
@@ -67,8 +70,20 @@ function RootNavigator() {
         <Stack.Screen name="(onboarding)" />
         <Stack.Screen name="common" />
 
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="(drawer)" />
         <Stack.Screen name="(auth)" />
+
+        <Stack.Screen
+          name="modal/product-view-modal"
+          options={{
+            presentation: "formSheet",
+            sheetAllowedDetents: [0.7, 1],
+            sheetInitialDetentIndex: 0,
+            sheetGrabberVisible: true,
+            sheetCornerRadius: 24,
+            sheetLargestUndimmedDetentIndex: 1,
+          }}
+        />
 
         <Stack.Screen name="+not-found" />
       </Stack>

@@ -1,11 +1,20 @@
 import tw from "@/lib/tailwind";
 import { foodCategory } from "@/utils/all-dammy-data";
+import { router } from "expo-router";
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 const FoodCard = ({ item }: any) => {
   return (
     <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "/top-category/category",
+          params: {
+            type: item?.title,
+          },
+        })
+      }
       activeOpacity={0.8}
       style={tw`bg-white relative w-40 h-40`}
     >
@@ -39,9 +48,11 @@ export default function HomeTopCategories() {
         <Text style={tw`text-title text-xl font-inter-semibold`}>
           Top Categories
         </Text>
-        <Text style={tw`text-primary underline text-sm font-inter-semibold`}>
-          See all
-        </Text>
+        <TouchableOpacity onPress={() => router.push("/top-category")}>
+          <Text style={tw`text-primary underline text-sm font-inter-semibold`}>
+            See all
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
