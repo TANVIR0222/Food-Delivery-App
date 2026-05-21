@@ -24,7 +24,7 @@ const LoginScreen = () => {
     const token = generateDummyToken(64);
     await save_token({ value: token });
     signIn();
-    router.push("/(tabs)");
+    router.replace("/(drawer)/(tabs)");
   };
 
   return (

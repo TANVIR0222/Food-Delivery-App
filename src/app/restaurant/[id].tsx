@@ -1,3 +1,4 @@
+import GlobalTopBar from "@/components/GlobalTopBar";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
 import tw from "@/lib/tailwind";
@@ -49,8 +50,9 @@ const MenuCard = ({ item }: any) => {
 };
 
 // ---------------- MAIN SCREEN ----------------
+// This screen handles deep link: foodapp://restaurant/[id]
 
-const RestaurantDetailsScreen = () => {
+const RestaurantDeepLinkScreen = () => {
   const { id } = useLocalSearchParams();
 
   const restaurant = restaurantAllData.find((item) => item.id === id);
@@ -65,8 +67,18 @@ const RestaurantDetailsScreen = () => {
 
   if (!restaurant) {
     return (
-      <View style={tw`flex-1 justify-center items-center`}>
-        <Text>Restaurant Not Found</Text>
+      <View style={tw`flex-1 justify-center items-center bg-white`}>
+        <Ionicons name="restaurant-outline" size={60} color="#ccc" />
+        <Text style={tw`text-lg font-inter-bold text-text_gray mt-4`}>
+          Restaurant Not Found
+        </Text>
+        <Text style={tw`text-text_gray mt-2`}>ID: {id}</Text>
+        <TouchableOpacity
+          onPress={() => router.navigate("/(drawer)/(tabs)")}
+          style={tw`bg-primary px-6 py-3 rounded-xl mt-6`}
+        >
+          <Text style={tw`text-white font-inter-semibold`}>Go to Home</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -89,35 +101,11 @@ const RestaurantDetailsScreen = () => {
 
     const relatedMenus = restaurantAllData
       .filter((res) => {
-        if (currentCategory === "burger") {
-          return res.name.toLowerCase().includes("burger");
-        }
-
-        if (currentCategory === "pizza") {
-          return res.name.toLowerCase().includes("pizza");
-        }
-
-        if (currentCategory === "dessert") {
-          return (
-            res.name.toLowerCase().includes("dessert") ||
-            res.name.toLowerCase().includes("sweet")
-          );
-        }
-
-        if (currentCategory === "healthy") {
-          return (
-            res.name.toLowerCase().includes("healthy") ||
-            res.name.toLowerCase().includes("fit")
-          );
-        }
-
-        if (currentCategory === "seafood") {
-          return (
-            res.name.toLowerCase().includes("sea") ||
-            res.name.toLowerCase().includes("ocean")
-          );
-        }
-
+        if (currentCategory === "burger") return res.name.toLowerCase().includes("burger");
+        if (currentCategory === "pizza") return res.name.toLowerCase().includes("pizza");
+        if (currentCategory === "dessert") return res.name.toLowerCase().includes("dessert") || res.name.toLowerCase().includes("sweet");
+        if (currentCategory === "healthy") return res.name.toLowerCase().includes("healthy") || res.name.toLowerCase().includes("fit");
+        if (currentCategory === "seafood") return res.name.toLowerCase().includes("sea") || res.name.toLowerCase().includes("ocean");
         return false;
       })
       .flatMap((res) => res.menu);
@@ -137,7 +125,6 @@ const RestaurantDetailsScreen = () => {
 
   const AllTab = () => {
     const allMenus = restaurantAllData.flatMap((res) => res.menu);
-
     return (
       <FlatList
         data={allMenus}
@@ -145,85 +132,6 @@ const RestaurantDetailsScreen = () => {
         renderItem={({ item }) => <MenuCard item={item} />}
         contentContainerStyle={tw`pb-10 pt-4`}
         showsVerticalScrollIndicator={false}
-      />
-    );
-  };
-
-  // ---------------- BURGER TAB ----------------
-
-  const BurgerTab = () => {
-    const filtered = restaurantAllData
-      .flatMap((res) => res.menu)
-      .filter((item: any) => item.title.toLowerCase().includes("burger"));
-
-    return (
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MenuCard item={item} />}
-        contentContainerStyle={tw`pb-10 pt-4`}
-      />
-    );
-  };
-
-  // ---------------- PIZZA TAB ----------------
-
-  const PizzaTab = () => {
-    const filtered = restaurantAllData
-      .flatMap((res) => res.menu)
-      .filter((item: any) => item.title.toLowerCase().includes("pizza"));
-
-    return (
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MenuCard item={item} />}
-        contentContainerStyle={tw`pb-10 pt-4`}
-      />
-    );
-  };
-
-  // ---------------- DESSERT TAB ----------------
-
-  const DessertTab = () => {
-    const filtered = restaurantAllData
-      .flatMap((res) => res.menu)
-      .filter(
-        (item: any) =>
-          item.title.toLowerCase().includes("cake") ||
-          item.title.toLowerCase().includes("dessert") ||
-          item.title.toLowerCase().includes("donut"),
-      );
-
-    return (
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MenuCard item={item} />}
-        contentContainerStyle={tw`pb-10 pt-4`}
-      />
-    );
-  };
-
-  // ---------------- HEALTHY TAB ----------------
-
-  const HealthyTab = () => {
-    const filtered = restaurantAllData
-      .flatMap((res) => res.menu)
-      .filter(
-        (item: any) =>
-          item.title.toLowerCase().includes("salad") ||
-          item.title.toLowerCase().includes("protein") ||
-          item.title.toLowerCase().includes("smoothie") ||
-          item.title.toLowerCase().includes("bowl"),
-      );
-
-    return (
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MenuCard item={item} />}
-        contentContainerStyle={tw`pb-10 pt-4`}
       />
     );
   };
@@ -328,23 +236,18 @@ const RestaurantDetailsScreen = () => {
           <Tab.Navigator
             screenOptions={{
               tabBarScrollEnabled: true,
-
               tabBarLabelStyle: {
                 fontSize: 13,
                 fontWeight: "700",
                 textTransform: "none",
               },
-
-              // ✅ RIGHT WAY TO CONTROL COLOR
               tabBarActiveTintColor: "#58C1F0",
               tabBarInactiveTintColor: "#999",
-
               tabBarIndicatorStyle: {
                 backgroundColor: "#58C1F0",
                 height: 3,
                 borderRadius: 999,
               },
-
               tabBarStyle: {
                 elevation: 0,
                 shadowOpacity: 0,
@@ -367,38 +270,6 @@ const RestaurantDetailsScreen = () => {
                 </View>
               )}
             </Tab.Screen>
-
-            <Tab.Screen name="Burger">
-              {() => (
-                <View style={tw`flex-1 bg-white`}>
-                  <BurgerTab />
-                </View>
-              )}
-            </Tab.Screen>
-
-            <Tab.Screen name="Pizza">
-              {() => (
-                <View style={tw`flex-1 bg-white`}>
-                  <PizzaTab />
-                </View>
-              )}
-            </Tab.Screen>
-
-            <Tab.Screen name="Desserts">
-              {() => (
-                <View style={tw`flex-1 bg-white`}>
-                  <DessertTab />
-                </View>
-              )}
-            </Tab.Screen>
-
-            <Tab.Screen name="Healthy">
-              {() => (
-                <View style={tw`flex-1 bg-white`}>
-                  <HealthyTab />
-                </View>
-              )}
-            </Tab.Screen>
           </Tab.Navigator>
         </View>
       </View>
@@ -406,4 +277,4 @@ const RestaurantDetailsScreen = () => {
   );
 };
 
-export default RestaurantDetailsScreen;
+export default RestaurantDeepLinkScreen;

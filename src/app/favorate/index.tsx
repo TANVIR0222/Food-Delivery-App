@@ -32,7 +32,7 @@ export default function FavoriteScreen() {
     return (
       <TouchableOpacity
         activeOpacity={0.85}
-        style={tw`bg-white rounded-3xl mb-4 overflow-hidden`}
+        style={tw`bg-description2/10 rounded-3xl mb-4 overflow-hidden`}
       >
         {/* FOOD IMAGE */}
         <View style={tw`relative`}>

@@ -23,6 +23,8 @@ const RestaurantCard = ({ item }: any) => {
           pathname: "/food-details",
           params: {
             id: item.id,
+            name: item.name,
+            price: item.minPrice,
           },
         })
       }
@@ -95,7 +97,7 @@ const RestaurantCard = ({ item }: any) => {
           </Text>
 
           {item.badges?.[0] && (
-            <Text style={tw`text-pink-600 text-lg font-sfpro-600`}>
+            <Text style={tw`text-pink-600 text-lg font-inter-semibold`}>
               {item.badges[0]}
             </Text>
           )}

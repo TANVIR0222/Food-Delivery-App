@@ -6,7 +6,7 @@ export default function AuthRootLayout() {
   const { session, isLoading } = useSession();
 
   if (!isLoading && session) {
-    return <Redirect href="/(tabs)" />;
+    return <Redirect href="/(drawer)/(tabs)" />;
   }
 
   return (

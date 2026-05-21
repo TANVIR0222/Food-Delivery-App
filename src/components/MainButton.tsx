@@ -67,7 +67,7 @@ const MainButton: React.FC<MainButtonProps> = ({
           <TouchableOpacity onPress={onSignUpPress}>
             <Text
               style={[
-                tw` text-title text-sm underline font-geist-medium `,
+                tw` text-title text-sm underline font-inter-medium `,
                 textStyle,
               ]}
             >

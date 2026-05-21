@@ -75,6 +75,7 @@ function RootNavigator() {
 
         <Stack.Screen name="(drawer)" />
         <Stack.Screen name="(auth)" />
+        <Stack.Screen name="restaurant" />
         <Stack.Screen name="favorate" />
 
         <Stack.Screen

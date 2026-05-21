@@ -1,4 +1,5 @@
 import PageWrapper from "@/components/PageWrapper";
+import { useFavorites } from "@/context/FavoriteContext";
 import tw from "@/lib/tailwind";
 import { restaurantAllData } from "@/utils/all-dammy-data";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,16 +7,15 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { router } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useFavorites } from "@/context/FavoriteContext";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -140,7 +140,7 @@ export default function RestaurantListScreen() {
       <PageWrapper>
         {/* ---------------- SEARCH BAR ---------------- */}
         <View
-          style={tw`flex-row items-center bg-slate-200 px-3 py-2 rounded-2xl mb-3`}
+          style={tw`flex-row items-center bg-description2/10 px-3 py-2 rounded-2xl mb-3`}
         >
           <Ionicons name="search" size={18} color="#9ca3af" />
           <TextInput
@@ -170,66 +170,79 @@ export default function RestaurantListScreen() {
               backgroundColor: "white",
               elevation: 0,
               shadowOpacity: 0,
+              // marginBottom: 20
             },
           }}
         >
           <Tab.Screen name="All">
             {() => (
-              <CategoryScreen
-                category="All"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="All"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
 
           <Tab.Screen name="Burgers">
             {() => (
-              <CategoryScreen
-                category="Burgers"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="Burgers"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
 
           <Tab.Screen name="Pizza">
             {() => (
-              <CategoryScreen
-                category="Pizza"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="Pizza"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
 
           <Tab.Screen name="Seafood">
             {() => (
-              <CategoryScreen
-                category="Seafood"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="Seafood"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
 
           <Tab.Screen name="Desserts">
             {() => (
-              <CategoryScreen
-                category="Desserts"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="Desserts"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
 
           <Tab.Screen name="Healthy">
             {() => (
-              <CategoryScreen
-                category="Healthy Food"
-                data={data}
-                searchText={searchText}
-              />
+              <View style={tw`flex-1 bg-white`}>
+                <CategoryScreen
+                  category="Healthy Food"
+                  data={data}
+                  searchText={searchText}
+                />
+              </View>
             )}
           </Tab.Screen>
         </Tab.Navigator>

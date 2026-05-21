@@ -28,7 +28,15 @@ export default function OrdersScreen() {
         </Text>
       </View>
 
-      <View style={tw`flex-col items-center gap-2`}>
+      <View style={tw`flex-col items-end gap-2`}>
+
+        <TouchableOpacity
+          onPress={() => removeFromCart(item.id)}
+          style={tw`bg-red-100 rounded-lg p-2`}
+        >
+          <Ionicons name="trash" size={14} color="#ef4444" />
+        </TouchableOpacity>
+
         <View style={tw`flex-row items-center gap-2 bg-stroke rounded-lg px-2 py-1`}>
           <TouchableOpacity
             onPress={() => updateQuantity(item.id, item.quantity - 1)}
@@ -49,12 +57,7 @@ export default function OrdersScreen() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          onPress={() => removeFromCart(item.id)}
-          style={tw`bg-red-100 rounded-lg p-2`}
-        >
-          <Ionicons name="trash" size={14} color="#ef4444" />
-        </TouchableOpacity>
+
       </View>
     </View>
   );

@@ -78,7 +78,7 @@ const HomeCarousel = () => {
               >
                 <Text
                   numberOfLines={2}
-                  style={tw`font-geist-semibold text-white text-2xl z-50`}
+                  style={tw`font-inter-semibold text-white text-2xl z-50`}
                 >
                   {item?.title}
                 </Text>

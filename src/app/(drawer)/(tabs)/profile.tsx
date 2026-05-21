@@ -1,7 +1,7 @@
 import { useSession } from "@/components/auth/ctx";
 import PageWrapper from "@/components/PageWrapper";
 import tw from "@/lib/tailwind";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 
 import React from "react";
 import {
@@ -59,6 +59,8 @@ export default function Profile() {
     ]);
   };
 
+  const navigation = useNavigation();
+
   return (
     <PageWrapper>
       <ScrollView
@@ -79,21 +81,21 @@ export default function Profile() {
               </View>
             </View>
             <View>
-              <Text style={tw`text-xl font-sfpro-600 text-black text-center`}>
+              <Text style={tw`text-xl font-inter-semibold text-black text-center`}>
                 Tanvir
               </Text>
-              {/* <Text
-                style={tw`text-text14 font-sfpro-500 text-black text-center`}
+              <Text
+                style={tw`text-sm font-inter-medium text-text_gray text-center`}
               >
-                {data?.data?.email}
-              </Text> */}
+                tanvir@email.com
+              </Text>
             </View>
           </View>
 
           <View style={tw`flex-col gap-4`}>
             {/* Static Privacy & Security Section */}
             <View style={tw`mb-16`}>
-              <Text style={tw`text-text18 font-sfpro-600 text-headingText`}>
+              <Text style={tw`text-lg font-inter-semibold text-title`}>
                 Privacy & Security
               </Text>
 
@@ -102,7 +104,7 @@ export default function Profile() {
                 // onPress={() => router.push("/(common)/privacy-policy")}
                 style={tw`flex-row items-center justify-between border border-border border-opacity-50 py-3 px-5 rounded-full mt-4`}
               >
-                <Text style={tw`text-black text-text14 font-sfpro-600`}>
+                <Text style={tw`text-black text-sm font-inter-semibold`}>
                   Privacy Policy
                 </Text>
               </TouchableOpacity>
@@ -112,7 +114,7 @@ export default function Profile() {
                 // onPress={() => router.push("/(common)/terms-and-conditions")}
                 style={tw`flex-row items-center justify-between border border-border border-opacity-50 py-3 px-5 rounded-full mt-4`}
               >
-                <Text style={tw`text-black text-text14 font-sfpro-600`}>
+                <Text style={tw`text-black text-sm font-inter-semibold`}>
                   Terms and Conditions
                 </Text>
               </TouchableOpacity>
@@ -155,7 +157,7 @@ export default function Profile() {
                 onPress={() => handleLogout()}
                 style={tw`flex-row items-center justify-between border border-border border-opacity-50 py-3 px-5 rounded-full mt-4`}
               >
-                <Text style={tw`text-red-600 text-text14 font-sfpro-600`}>
+                <Text style={tw`text-red-600 text-sm font-inter-semibold`}>
                   Log Out
                 </Text>
               </TouchableOpacity>

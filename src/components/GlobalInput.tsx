@@ -70,12 +70,12 @@ const GlobalInput: React.FC<FloatingInputProps> = ({
         )}
       >
         <Animated.Text
-          style={[tw`text-text12 font-sfpro-400 text-gray`, labelStyle]}
+          style={[tw`text-xs font-inter-regular text-gray`, labelStyle]}
         >
           {label}
         </Animated.Text>
         <TextInput
-          style={tw`flex-1 h-10 text-text12 font-sfpro-400 text-gray mt-3`}
+          style={tw`flex-1 h-10 text-xs font-inter-regular text-gray mt-3`}
           keyboardType={keyboardType}
           value={value}
           onChangeText={onChangeText}

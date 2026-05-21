@@ -2,20 +2,20 @@ import GlobalTopBar from "@/components/GlobalTopBar";
 import PageWrapper from "@/components/PageWrapper";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
+import tw from "@/lib/tailwind";
 import { restaurantAllData } from "@/utils/all-dammy-data";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import React from "react";
 import { Alert, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import tw from "@/lib/tailwind";
 
 const RestaurantCard = ({ item }: any) => {
   const { addToCart, cartItems } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
-  
+
   const firstItem = item.menu?.[0];
-  const isAdded = firstItem 
-    ? cartItems.some((cartItem) => cartItem.id === firstItem.id) 
+  const isAdded = firstItem
+    ? cartItems.some((cartItem) => cartItem.id === firstItem.id)
     : cartItems.some((cartItem) => cartItem.id === item.id);
 
   const isFav = isFavorite(item.id);
@@ -167,7 +167,9 @@ const RestaurantCard = ({ item }: any) => {
 const RestaurantScreen = () => {
   return (
     <PageWrapper>
-      <GlobalTopBar title="Back" />
+      <View style={tw`mt-4`}>
+        <GlobalTopBar title="Back" />
+      </View>
       {/* Header */}
       <View style={tw`mb-5`}>
         <Text style={tw`text-3xl font-inter-bold text-black`}>

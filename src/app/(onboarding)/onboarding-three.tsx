@@ -28,7 +28,7 @@ export default function onboardingThree() {
         </View>
       </View>
       <MainButton
-        title=" Started"
+        title="Get Started"
         onPress={() => router.push("/(auth)")}
         // onPress={() => router.push("/onboarding-three")}
       />

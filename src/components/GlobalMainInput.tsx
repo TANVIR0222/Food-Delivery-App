@@ -90,7 +90,7 @@ const GlobalMainInput: React.FC<InputProps> = ({
 
       {/* Error Message */}
       {showError && (
-        <Text style={tw`text-red font-sfProLight text-xs ml-2`}>{error}</Text>
+        <Text style={tw`text-red font-inter-light text-xs ml-2`}>{error}</Text>
       )}
     </View>
   );

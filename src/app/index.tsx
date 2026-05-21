@@ -18,10 +18,8 @@ export default function MainScreen() {
       const timeout = setTimeout(() => {
         SplashScreen.hideAsync();
         if (session) {
-          router?.replace("/(tabs)");
+          router?.replace("/(drawer)/(tabs)");
         } else {
-          console.log("");
-
           router?.replace("/(onboarding)/onboarding-one");
         }
       }, 800);
